@@ -1,0 +1,55 @@
+username: cloudadmin
+password: Dolphin2021*
+Public IP: 172.112.245.159
+Please note your unique ID for future exercises in this module:
+PS /home/michael> Write-Host $uniqueID
+858220
+PS /home/michael> Write-Host "Your resource group name is:"
+Your resource group name is:
+PS /home/michael> Write-Host $resourceGroupName
+learn-bdbddea0-7e5d-4247-b1af-683f116b411e
+PS /home/michael> Write-Host "Your resources were deployed in the following region:"
+Your resources were deployed in the following region:
+PS /home/michael> Write-Host $location
+westus
+PS /home/michael> Write-Host "Your server name is:"
+Your server name is:
+PS /home/michael> Write-Host $serverName
+bus-server858220
+PS /home/michael>
+
+# Create a new server with a system wide unique server name
+$server = New-AzSqlServer -ResourceGroupName $resourceGroupName -ServerName $serverName -Location $location -SqlAdministratorCredentials $(New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $adminSqlLogin, $(ConvertTo-SecureString -String $password -AsPlainText -Force))
+# Create a server firewall rule that allows access from the specified IP range and all Azure services
+$serverFirewallRule = New-AzSqlServerFirewallRule -ResourceGroupName $resourceGroupName -ServerName $serverName -FirewallRuleName "AllowedIPs" -StartIpAddress $ipAddress -EndIpAddress $ipAddress 
+$allowAzureIpsRule = New-AzSqlServerFirewallRule -ResourceGroupName $resourceGroupName -ServerName $serverName -AllowAllAzureIPs
+# Create a database
+$database = New-AzSqlDatabase  -ResourceGroupName $resourceGroupName -ServerName $serverName -DatabaseName $databaseName -Edition "GeneralPurpose" -Vcore 4 -ComputeGeneration "Gen5" -ComputeModel Serverless -MinimumCapacity 0.5
+Write-Host "Database deployed."
+
+Server=bus-server858220.database.windows.net,1433;Initial Catalog=bus-db;User Id=cloudadmin;Password=Dolphin2021*;Connection Timeout=30;
+https://github.com/mikebrunak/serverless-full-stack-apps-azure-sql
+github token: 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
+
+PS /home/michael> # The logical server name has to be unique in the system
+PS /home/michael> $serverName = "bus-server$($uniqueID)"
+PS /home/michael> # The sample database name
+PS /home/michael> $databaseName = "bus-db"
+PS /home/michael> Write-Host "Please note your unique ID for future exercises in this module:"
+Please note your unique ID for future exercises in this module:
+PS /home/michael> Write-Host $uniqueID
+623336
+PS /home/michael> Write-Host "Your resource group name is:"
+Your resource group name is:
+PS /home/michael> Write-Host $resourceGroupName
+learn-ecc65c99-6881-4488-adf3-42800388a594
+PS /home/michael> Write-Host "Your resources were deployed in the following region:"
+Your resources were deployed in the following region:
+PS /home/michael> Write-Host $location
+westus
+PS /home/michael> Write-Host "Your server name is:"
+Your server name is:
+PS /home/michael> Write-Host $serverName
+bus-server623336
+PS /home/michael>
+Server=bus-server623336.database.windows.net,1433;Initial Catalog=bus-db;User Id=cloudadmin;Password=Dolphin2021*;Connection Timeout=30;
